@@ -17,14 +17,11 @@ function addBook() {
 function showBook() {
   bookList.innerHTML = '';
   collections.forEach((collection, index) => {
-    bookList.innerHTML += `<div id="${index}">
+    bookList.innerHTML += `<div id="${index}" class="books">
             <p class="book-info">
-                <span class="title">${collection.title}</span>
-                <br/>
-                <span class="author">${collection.author}</span>
+                <span class="title">"${collection.title}" by ${collection.author}</span>
             </p>
             <button class="remove-btn">Remove</button>
-            <hr/>
     </div>`;
   });
 }

@@ -8,11 +8,13 @@
   text-align: center;
   margin-top: 20px;
 }
+
 .book-list {
   border: 3px solid #000;
   width: 800px;
   margin: 20px auto;
 }
+
 .books {
   display: flex;
   justify-content: space-between;
@@ -21,9 +23,11 @@
   height: 40px;
   background-color: #cccccc;
 }
+
 .books:nth-child(2n) {
   background-color: #fff;
 }
+
 .books .remove-btn {
   margin-right: 10px;
   border: 2px solid #000;
@@ -34,6 +38,7 @@
 #new {
   text-align: center;
 }
+
 #form {
   width: 500px;
   margin: 10px auto;
@@ -41,15 +46,18 @@
   flex-direction: column;
   align-items: flex-end
 }
+
 #form #input_title,#input_author {
   border: 3px solid #000;
   width: 500px;
   height: 40px;
 }
+
 #form #input_title::placeholder,#input_author::placeholder {
   padding-left: 10px;
   color: #000;
 }
+
 #form #add_btn {
   width: 60px;
   height: 30px;

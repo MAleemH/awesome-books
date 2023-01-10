@@ -4,7 +4,7 @@ const titleInput = document.querySelector('#input_title');
 const authorInput = document.querySelector('#input_author');
 const addBtn = document.querySelector('#add_btn');
 
-let collections = JSON.parse(localStorage.getItem('collections')) || [];
+const collections = JSON.parse(localStorage.getItem('collections')) || [];
 
 function addBook() {
   collections.push({
@@ -17,7 +17,7 @@ function addBook() {
 function showBook() {
   bookList.innerHTML = '';
   collections.forEach((collection, index) => {
-    bookList.innerHTML += `<div class='book${index + 1}' id="${index}">
+    bookList.innerHTML += `<div id="${index}">
             <p class="book-info">
                 <span class="title">${collection.title}</span>
                 <br/>
@@ -28,11 +28,12 @@ function showBook() {
     </div>`;
   });
 }
+showBook();
 
-function removeBook(cur) {
-  cur.parentElement.remove();
-  collections = collections.filter((collection, index) => index !== Number(cur.parentElement.id));
-  localStorage.setItem('collections', JSON.stringify(collections));
+function removeBook(book) {
+  book.parentElement.remove();
+  const newC = collections.filter((collection, i) => i !== Number(book.parentElement.id));
+  localStorage.setItem('collections', JSON.stringify(newC));
 }
 
 form.addEventListener('submit', (e) => {
@@ -42,17 +43,17 @@ form.addEventListener('submit', (e) => {
     titleInput.value = '';
     authorInput.value = '';
     showBook();
-
     e.preventDefault();
   } else {
     addBtn.disabled = true;
   }
+  window.location.reload();
 });
 
 bookList.addEventListener('click', (e) => {
   if (e.target.className.includes('remove-btn')) {
-    const targetEl = e.target;
-    removeBook(targetEl);
+    const data = e.target;
+    removeBook(data);
   }
+  window.location.reload();
 });
-showBook();

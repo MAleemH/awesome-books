@@ -1,59 +1,67 @@
+import Books from './modules/book.js';
+
 const form = document.querySelector('#form');
 const bookList = document.querySelector('.book-list');
 const titleInput = document.querySelector('#input_title');
 const authorInput = document.querySelector('#input_author');
 const addBtn = document.querySelector('#add_btn');
 
-const collections = JSON.parse(localStorage.getItem('collections')) || [];
+class Library {
+  constructor() {
+    this.Library = JSON.parse(localStorage.getItem('collections')) || [];
+  }
 
-function addBook() {
-  collections.push({
-    title: titleInput.value,
-    author: authorInput.value,
-  });
-  localStorage.setItem('collections', JSON.stringify(collections));
-}
+  addBook() {
+    const newBook = new Books();
+    newBook.title = titleInput.value;
+    newBook.author = authorInput.value;
+    this.Library.push(newBook);
+    localStorage.setItem('collections', JSON.stringify(this.Library));
+    this.showBook();
+  }
 
-function showBook() {
-  bookList.innerHTML = '';
-  collections.forEach((collection, index) => {
-    bookList.innerHTML += `<div id="${index}">
+  showBook() {
+    bookList.innerHTML = '';
+    this.Library.forEach((collection, i) => {
+      bookList.innerHTML += `<div id="${i}" class="books">
             <p class="book-info">
-                <span class="title">${collection.title}</span>
-                <br/>
-                <span class="author">${collection.author}</span>
+                <span class="title">"${collection.title}" by ${collection.author}</span>
             </p>
             <button class="remove-btn">Remove</button>
-            <hr/>
     </div>`;
+    });
+  }
+
+  removeBook(book) {
+    book.parentElement.remove();
+    this.Library = this.Library.filter((collection, i) => i !== Number(book.parentElement.id));
+    localStorage.setItem('collections', JSON.stringify(this.Library));
+  }
+}
+
+window.onload = () => {
+  const newLibrary = new Library();
+  newLibrary.showBook();
+
+  form.addEventListener('submit', (e) => {
+    if (titleInput.value !== '' && authorInput.value !== '') {
+      e.preventDefault();
+      addBtn.disabled = false;
+      newLibrary.addBook();
+      titleInput.value = '';
+      authorInput.value = '';
+      newLibrary.showBook();
+    } else {
+      addBtn.disabled = true;
+    }
+    window.location.reload();
   });
-}
-showBook();
 
-function removeBook(book) {
-  book.parentElement.remove();
-  const newC = collections.filter((collection, i) => i !== Number(book.parentElement.id));
-  localStorage.setItem('collections', JSON.stringify(newC));
-}
-
-form.addEventListener('submit', (e) => {
-  if (titleInput.value !== '' && authorInput.value !== '') {
-    addBtn.disabled = false;
-    addBook();
-    titleInput.value = '';
-    authorInput.value = '';
-    showBook();
-    e.preventDefault();
-  } else {
-    addBtn.disabled = true;
-  }
-  window.location.reload();
-});
-
-bookList.addEventListener('click', (e) => {
-  if (e.target.className.includes('remove-btn')) {
-    const data = e.target;
-    removeBook(data);
-  }
-  window.location.reload();
-});
+  bookList.addEventListener('click', (e) => {
+    if (e.target.className.includes('remove-btn')) {
+      const data = e.target;
+      newLibrary.removeBook(data);
+    }
+    window.location.reload();
+  });
+};

@@ -35,8 +35,6 @@ function removeBook(cur) {
   localStorage.setItem('collections', JSON.stringify(collections));
 }
 
-showBook();
-
 form.addEventListener('submit', (e) => {
   if (titleInput.value !== '' && authorInput.value !== '') {
     addBtn.disabled = false;
@@ -57,3 +55,4 @@ bookList.addEventListener('click', (e) => {
     removeBook(targetEl);
   }
 });
+showBook();

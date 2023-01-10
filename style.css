@@ -21,7 +21,7 @@
   padding: 5px;
   align-items: center;
   height: 40px;
-  background-color: #cccccc;
+  background-color: #ccc;
 }
 
 .books:nth-child(2n) {
@@ -44,16 +44,18 @@
   margin: 10px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-end
+  align-items: flex-end;
 }
 
-#form #input_title,#input_author {
+#form #input_title,
+#input_author {
   border: 3px solid #000;
   width: 500px;
   height: 40px;
 }
 
-#form #input_title::placeholder,#input_author::placeholder {
+#form #input_title::placeholder,
+#input_author::placeholder {
   padding-left: 10px;
   color: #000;
 }

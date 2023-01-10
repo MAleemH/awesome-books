@@ -42,10 +42,8 @@ class Library {
 window.onload = () => {
   const newLibrary = new Library();
   newLibrary.showBook();
-  //   newLibrary.showBook();
 
   form.addEventListener('submit', (e) => {
-    // const newLibrary = new Library();
     if (titleInput.value !== '' && authorInput.value !== '') {
       e.preventDefault();
       addBtn.disabled = false;

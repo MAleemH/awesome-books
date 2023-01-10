@@ -1,8 +1,8 @@
-const form = document.querySelector('form');
+const form = document.querySelector('#form');
 const bookList = document.querySelector('.book-list');
-const titleInput = document.querySelector('#titleInput');
-const authorInput = document.querySelector('#authorInput');
-const addBtn = document.querySelector('.add-btn');
+const titleInput = document.querySelector('#input_title');
+const authorInput = document.querySelector('#input_author');
+const addBtn = document.querySelector('#add_btn');
 
 let collections = JSON.parse(localStorage.getItem('collections')) || [];
 

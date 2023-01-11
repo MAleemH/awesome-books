@@ -1,13 +1,3 @@
-<a name="readme-top"></a>
-
-<div align="center">
-  <img src="murple_logo.png" alt="logo" width="140"  height="auto" />
-  <br/>
-
-  <h3><b>Awesome Books Project</b></h3>
-
-</div>
-
 <!-- TABLE OF CONTENTS -->
 
 # 📗 Table of Contents
@@ -32,36 +22,24 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-# 📖 [Awesome_Books_Project] <a name="about-project"></a>
+# 📖 Awesome Books Project <a name="about-project"></a>
 
-> This is the Javascript Plain project in Microverse Module 2.
+> This is the JavaScript Plain project in Microverse Module 2.
 
-**[Awesome_Books_Project]** is a HTML and Javascript based project.
+**Awesome Books Project** is a HTML and JavaScript based project.
 
 ## 🛠 Built With <a name="built-with"></a>
 
 ### Tech Stack <a name="tech-stack"></a>
 
-> HTML, Javascript and Linter Template
+> HTML, JavaScript and Linter Template
 
 <details>
-  <summary>Client</summary>
+  <summary>Languages</summary>
   <ul>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
   </ul>
 </details>
 
@@ -69,8 +47,7 @@
 
 ### Key Features <a name="key-features"></a>
 
-- **[key_features_1]**
-- **[key_features_2]**
+- **Single Page Application**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -78,7 +55,7 @@
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- [Live Demo Link]()
+- [Live Demo Link](https://maleemh.github.io/awesome-books/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -126,17 +103,17 @@ Use Github pages for free and secure deployment.
 
 
 
-👤 **Author1**
+👤 **Kaung Myat Kyaw**
 
 - GitHub: [@githubhandle](https://github.com/Rhaegar121)
 - Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/kaung-myat-kyaw-391720227)
 
-👤 **Author2**
+👤 **Muhammad Aleem Hashmi**
 
-- GitHub: [@githubhandle](https://github.com/MAleemH)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- LinkedIn: [LinkedIn](https://www.linkedin.com/linkedinhandle)
+- GitHub: [@MAleemH](https://github.com/MAleemH)
+- Twitter: [@MAleemHashmi1](https://twitter.com/MAleemHashmi1)
+- LinkedIn: [Muhammad Aleem Hashmi](https://www.linkedin.com/in/muhammad-aleem-hashmi-09658a171/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -146,9 +123,7 @@ Use Github pages for free and secure deployment.
 ## 🔭 Future Features <a name="future-features"></a>
 
 
-- [ ] **[Future_features]**
-- [ ] **[Future_features]**
-- [ ] **[Future_features]**
+- [ ] **About Page**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -174,7 +149,7 @@ Give a ⭐️ if you like this project!
 
 ## 🙏 Acknowledgments <a name="acknowledgements"></a>
 
-I would like to thank...
+I would like to thank everyone who did show support.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

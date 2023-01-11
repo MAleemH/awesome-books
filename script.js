@@ -1,5 +1,10 @@
 import Books from './modules/book.js';
 
+// menu buttons
+const booksListView = document.querySelector('#books-list-view');
+const addNewBookView = document.querySelector('#add-book-view');
+const contactView = document.querySelector('#contact-us-view');
+// menu buttons closed
 const form = document.querySelector('#form');
 const bookList = document.querySelector('.book-list');
 const titleInput = document.querySelector('#input_title');
@@ -65,3 +70,10 @@ window.onload = () => {
     window.location.reload();
   });
 };
+
+// calling all views
+
+contactView.addEventListener('click', () => {
+  document.querySelector('#contact-us').style.display = 'block';
+  document.querySelector('#books-list').style.display = 'none';
+})

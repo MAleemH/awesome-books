@@ -22,11 +22,11 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-# 📖 [Awesome Books Project] <a name="about-project"></a>
+# 📖 Awesome Books Project <a name="about-project"></a>
 
 > This is the JavaScript Plain project in Microverse Module 2.
 
-**[Awesome Books Project]** is a HTML and JavaScript based project.
+**Awesome Books Project** is a HTML and JavaScript based project.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -47,7 +47,7 @@
 
 ### Key Features <a name="key-features"></a>
 
-- **[Single Page Application]**
+- **Single Page Application**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -103,17 +103,17 @@ Use Github pages for free and secure deployment.
 
 
 
-👤 **Author1**
+👤 **Kaung Myat Kyaw**
 
 - GitHub: [@githubhandle](https://github.com/Rhaegar121)
 - Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/kaung-myat-kyaw-391720227)
 
-👤 **Author2**
+👤 **Muhammad Aleem Hashmi**
 
-- GitHub: [@githubhandle](https://github.com/MAleemH)
-- Twitter: [@twitterhandle](https://twitter.com/MAleemHashmi1)
-- LinkedIn: [LinkedIn](https://www.linkedin.com/in/muhammad-aleem-hashmi-09658a171/)
+- GitHub: [@MAleemH](https://github.com/MAleemH)
+- Twitter: [@MAleemHashmi1](https://twitter.com/MAleemHashmi1)
+- LinkedIn: [Muhammad Aleem Hashmi](https://www.linkedin.com/in/muhammad-aleem-hashmi-09658a171/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -123,7 +123,7 @@ Use Github pages for free and secure deployment.
 ## 🔭 Future Features <a name="future-features"></a>
 
 
-- [ ] **[About Page]**
+- [ ] **About Page**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

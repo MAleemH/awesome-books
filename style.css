@@ -1,25 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Rubik+Vinyl&family=Rye&display=swap');
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-/* navbar */
+.container {
+  max-width: 1000px;
+  height: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+}
 
+h1 {
+  font-family: 'Londrina Outline', cursive;
+  font-size: 45px;
+  text-transform: capitalize;
+  text-align: center;
+  margin-top: 70px;
+}
+
+/* navbar */
 .navbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border: 2px solid black;
-  padding: 10px;
+  padding: 10px 25px;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
+  margin: 10px 15px;
 }
 
 .menu-list {
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 35px;
   list-style: none;
 }
 
@@ -27,13 +45,16 @@ a {
   text-decoration: none;
   color: black;
 }
+a:hover {
+  color: #00b400;
+}
+
+.active {
+  color: #00b400;
+}
 
 /* navbar closed */
-
-#all {
-  text-align: center;
-  margin-top: 20px;
-}
+/* books-list */
 
 .book-list {
   border: 3px solid #000;
@@ -59,6 +80,11 @@ a {
   border: 2px solid #000;
   width: 70px;
   height: 30px;
+}
+
+/* add-book */
+#add-book {
+  display: none;
 }
 
 #new {
@@ -93,13 +119,15 @@ a {
 }
 
 /* contact us section */
-
 #contact-us {
+  display: none;
+}
+
+#contact-us .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  padding: 100px;
 }
 
 .contact-info {
@@ -113,3 +141,11 @@ a {
 }
 
 /* contact us section closed */
+
+#copyright {
+  border: 2px solid #000;
+  margin: 620px 15px 0px 15px;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 25px;
+}

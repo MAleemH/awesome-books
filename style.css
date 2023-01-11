@@ -45,6 +45,7 @@ a {
   text-decoration: none;
   color: black;
 }
+
 a:hover {
   color: #00b400;
 }
@@ -54,6 +55,7 @@ a:hover {
 }
 
 /* navbar closed */
+
 /* books-list */
 
 .book-list {
@@ -144,7 +146,7 @@ a:hover {
 
 #copyright {
   border: 2px solid #000;
-  margin: 620px 15px 0px 15px;
+  margin: 620px 15px 0 15px;
   font-size: 20px;
   font-weight: bold;
   padding: 10px 25px;

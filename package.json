@@ -11,7 +11,7 @@
     "stylelint-scss": "^3.21.0"
   },
   "name": "awesome-books-2",
-  "description": "",
+  "description": "<!-- TABLE OF CONTENTS -->",
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {

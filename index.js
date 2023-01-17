@@ -1,5 +1,5 @@
 import Library from './modules/library.js';
-import { DateTime } from './modules/luxon/src/luxon.js';
+import { DateTime } from './modules/luxon.js';
 
 // menu buttons closed
 const form = document.querySelector('#form');

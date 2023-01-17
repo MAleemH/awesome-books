@@ -32,7 +32,6 @@ window.onload = () => {
     } else {
       addBtn.disabled = true;
     }
-    window.location.reload();
   });
 
   bookList.addEventListener('click', (e) => {
@@ -40,7 +39,7 @@ window.onload = () => {
       const data = e.target;
       newLibrary.removeBook(data);
     }
-    window.location.reload();
+    newLibrary.showBook();
   });
 };
 

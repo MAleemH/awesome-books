@@ -1,10 +1,10 @@
-import Duration from "./duration.js";
-import Interval from "./interval.js";
-import Settings from "./settings.js";
-import Info from "./info.js";
-import Formatter from "./impl/formatter.js";
-import FixedOffsetZone from "./zones/fixedOffsetZone.js";
-import Locale from "./impl/locale.js";
+import Duration from './duration.js';
+import Interval from './interval.js';
+import Settings from './settings.js';
+import Info from './info.js';
+import Formatter from './impl/formatter.js';
+import FixedOffsetZone from './zones/fixedOffsetZone.js';
+import Locale from './impl/locale.js';
 import {
   isUndefined,
   maybeArray,
@@ -19,16 +19,16 @@ import {
   roundTo,
   objToLocalTS,
   padStart,
-} from "./impl/util.js";
-import { normalizeZone } from "./impl/zoneUtil.js";
-import diff from "./impl/diff.js";
-import { parseRFC2822Date, parseISODate, parseHTTPDate, parseSQL } from "./impl/regexParser.js";
+} from './impl/util.js';
+import { normalizeZone } from './impl/zoneUtil.js';
+import diff from './impl/diff.js';
+import { parseRFC2822Date, parseISODate, parseHTTPDate, parseSQL } from './impl/regexParser.js';
 import {
   parseFromTokens,
   explainFromTokens,
   formatOptsToTokens,
   expandMacroTokens,
-} from "./impl/tokenParser.js";
+} from './impl/tokenParser.js';
 import {
   gregorianToWeek,
   weekToGregorian,
@@ -38,21 +38,21 @@ import {
   hasInvalidWeekData,
   hasInvalidOrdinalData,
   hasInvalidTimeData,
-} from "./impl/conversions.js";
-import * as Formats from "./impl/formats.js";
+} from './impl/conversions.js';
+import * as Formats from './impl/formats.js';
 import {
   InvalidArgumentError,
   ConflictingSpecificationError,
   InvalidUnitError,
   InvalidDateTimeError,
-} from "./errors.js";
-import Invalid from "./impl/invalid.js";
+} from './errors.js';
+import Invalid from './impl/invalid.js';
 
-const INVALID = "Invalid DateTime";
+const INVALID = 'Invalid DateTime';
 const MAX_DATE = 8.64e15;
 
 function unsupportedZone(zone) {
-  return new Invalid("unsupported zone", `the zone "${zone.name}" is not supported`);
+  return new Invalid('unsupported zone', `the zone '${zone.name}' is not supported`);
 }
 
 // we cache week data on the DT object and this intermediates the cache
@@ -63,7 +63,7 @@ function possiblyCachedWeekData(dt) {
   return dt.weekData;
 }
 
-// clone really means, "make a new object with these modifications". all "setters" really use this
+// clone really means, 'make a new object with these modifications'. all 'setters' really use this
 // to create a new object while only changing some of the properties
 function clone(inst, alts) {
   const current = {
@@ -150,7 +150,7 @@ function adjustTime(inst, dur) {
       minutes: dur.minutes,
       seconds: dur.seconds,
       milliseconds: dur.milliseconds,
-    }).as("milliseconds"),
+    }).as('milliseconds'),
     localTS = objToLocalTS(c);
 
   let [ts, o] = fixOffset(localTS, oPre, inst.zone);
@@ -178,7 +178,7 @@ function parseDataToDateTime(parsed, parsedZone, opts, format, text, specificOff
     return setZone ? inst : inst.setZone(zone);
   } else {
     return DateTime.invalid(
-      new Invalid("unparsable", `the input "${text}" can't be parsed as ${format}`)
+      new Invalid('unparsable', `the input '${text}' can't be parsed as ${format}`)
     );
   }
 }
@@ -187,7 +187,7 @@ function parseDataToDateTime(parsed, parsedZone, opts, format, text, specificOff
 // helps handle the details
 function toTechFormat(dt, format, allowZ = true) {
   return dt.isValid
-    ? Formatter.create(Locale.create("en-US"), {
+    ? Formatter.create(Locale.create('en-US'), {
         allowZ,
         forceSimple: true,
       }).formatDateTimeFromString(dt, format)
@@ -196,14 +196,14 @@ function toTechFormat(dt, format, allowZ = true) {
 
 function toISODate(o, extended) {
   const longFormat = o.c.year > 9999 || o.c.year < 0;
-  let c = "";
-  if (longFormat && o.c.year >= 0) c += "+";
+  let c = '';
+  if (longFormat && o.c.year >= 0) c += '+';
   c += padStart(o.c.year, longFormat ? 6 : 4);
 
   if (extended) {
-    c += "-";
+    c += '-';
     c += padStart(o.c.month);
-    c += "-";
+    c += '-';
     c += padStart(o.c.day);
   } else {
     c += padStart(o.c.month);
@@ -222,10 +222,10 @@ function toISOTime(
 ) {
   let c = padStart(o.c.hour);
   if (extended) {
-    c += ":";
+    c += ':';
     c += padStart(o.c.minute);
     if (o.c.second !== 0 || !suppressSeconds) {
-      c += ":";
+      c += ':';
     }
   } else {
     c += padStart(o.c.minute);
@@ -235,29 +235,29 @@ function toISOTime(
     c += padStart(o.c.second);
 
     if (o.c.millisecond !== 0 || !suppressMilliseconds) {
-      c += ".";
+      c += '.';
       c += padStart(o.c.millisecond, 3);
     }
   }
 
   if (includeOffset) {
     if (o.isOffsetFixed && o.offset === 0 && !extendedZone) {
-      c += "Z";
+      c += 'Z';
     } else if (o.o < 0) {
-      c += "-";
+      c += '-';
       c += padStart(Math.trunc(-o.o / 60));
-      c += ":";
+      c += ':';
       c += padStart(Math.trunc(-o.o % 60));
     } else {
-      c += "+";
+      c += '+';
       c += padStart(Math.trunc(o.o / 60));
-      c += ":";
+      c += ':';
       c += padStart(Math.trunc(o.o % 60));
     }
   }
 
   if (extendedZone) {
-    c += "[" + o.zone.ianaName + "]";
+    c += '[' + o.zone.ianaName + ']';
   }
   return c;
 }
@@ -288,45 +288,45 @@ const defaultUnitValues = {
   };
 
 // Units in the supported calendars, sorted by bigness
-const orderedUnits = ["year", "month", "day", "hour", "minute", "second", "millisecond"],
+const orderedUnits = ['year', 'month', 'day', 'hour', 'minute', 'second', 'millisecond'],
   orderedWeekUnits = [
-    "weekYear",
-    "weekNumber",
-    "weekday",
-    "hour",
-    "minute",
-    "second",
-    "millisecond",
+    'weekYear',
+    'weekNumber',
+    'weekday',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
   ],
-  orderedOrdinalUnits = ["year", "ordinal", "hour", "minute", "second", "millisecond"];
+  orderedOrdinalUnits = ['year', 'ordinal', 'hour', 'minute', 'second', 'millisecond'];
 
 // standardize case and plurality in units
 function normalizeUnit(unit) {
   const normalized = {
-    year: "year",
-    years: "year",
-    month: "month",
-    months: "month",
-    day: "day",
-    days: "day",
-    hour: "hour",
-    hours: "hour",
-    minute: "minute",
-    minutes: "minute",
-    quarter: "quarter",
-    quarters: "quarter",
-    second: "second",
-    seconds: "second",
-    millisecond: "millisecond",
-    milliseconds: "millisecond",
-    weekday: "weekday",
-    weekdays: "weekday",
-    weeknumber: "weekNumber",
-    weeksnumber: "weekNumber",
-    weeknumbers: "weekNumber",
-    weekyear: "weekYear",
-    weekyears: "weekYear",
-    ordinal: "ordinal",
+    year: 'year',
+    years: 'year',
+    month: 'month',
+    months: 'month',
+    day: 'day',
+    days: 'day',
+    hour: 'hour',
+    hours: 'hour',
+    minute: 'minute',
+    minutes: 'minute',
+    quarter: 'quarter',
+    quarters: 'quarter',
+    second: 'second',
+    seconds: 'second',
+    millisecond: 'millisecond',
+    milliseconds: 'millisecond',
+    weekday: 'weekday',
+    weekdays: 'weekday',
+    weeknumber: 'weekNumber',
+    weeksnumber: 'weekNumber',
+    weeknumbers: 'weekNumber',
+    weekyear: 'weekYear',
+    weekyears: 'weekYear',
+    ordinal: 'ordinal',
   }[unit.toLowerCase()];
 
   if (!normalized) throw new InvalidUnitError(unit);
@@ -399,7 +399,7 @@ function diffRelative(start, end, opts) {
 function lastOpts(argList) {
   let opts = {},
     args;
-  if (argList.length > 0 && typeof argList[argList.length - 1] === "object") {
+  if (argList.length > 0 && typeof argList[argList.length - 1] === 'object') {
     opts = argList[argList.length - 1];
     args = Array.from(argList).slice(0, argList.length - 1);
   } else {
@@ -437,7 +437,7 @@ export default class DateTime {
 
     let invalid =
       config.invalid ||
-      (Number.isNaN(config.ts) ? new Invalid("invalid input") : null) ||
+      (Number.isNaN(config.ts) ? new Invalid('invalid input') : null) ||
       (!zone.isValid ? unsupportedZone(zone) : null);
     /**
      * @access private
@@ -454,7 +454,7 @@ export default class DateTime {
       } else {
         const ot = zone.offset(this.ts);
         c = tsToObj(this.ts, ot);
-        invalid = Number.isNaN(c.year) ? new Invalid("invalid input") : null;
+        invalid = Number.isNaN(c.year) ? new Invalid('invalid input') : null;
         c = invalid ? null : c;
         o = invalid ? null : ot;
       }
@@ -513,12 +513,12 @@ export default class DateTime {
    * @param {number} [second=0] - The second of the minute, meaning a number between 0 and 59
    * @param {number} [millisecond=0] - The millisecond of the second, meaning a number between 0 and 999
    * @example DateTime.local()                                  //~> now
-   * @example DateTime.local({ zone: "America/New_York" })      //~> now, in US east coast time
+   * @example DateTime.local({ zone: 'America/New_York' })      //~> now, in US east coast time
    * @example DateTime.local(2017)                              //~> 2017-01-01T00:00:00
    * @example DateTime.local(2017, 3)                           //~> 2017-03-01T00:00:00
-   * @example DateTime.local(2017, 3, 12, { locale: "fr" })     //~> 2017-03-12T00:00:00, with a French locale
+   * @example DateTime.local(2017, 3, 12, { locale: 'fr' })     //~> 2017-03-12T00:00:00, with a French locale
    * @example DateTime.local(2017, 3, 12, 5)                    //~> 2017-03-12T05:00:00
-   * @example DateTime.local(2017, 3, 12, 5, { zone: "utc" })   //~> 2017-03-12T05:00:00, in UTC
+   * @example DateTime.local(2017, 3, 12, 5, { zone: 'utc' })   //~> 2017-03-12T05:00:00, in UTC
    * @example DateTime.local(2017, 3, 12, 5, 45)                //~> 2017-03-12T05:45:00
    * @example DateTime.local(2017, 3, 12, 5, 45, 10)            //~> 2017-03-12T05:45:10
    * @example DateTime.local(2017, 3, 12, 5, 45, 10, 765)       //~> 2017-03-12T05:45:10.765
@@ -549,9 +549,9 @@ export default class DateTime {
    * @example DateTime.utc(2017, 3, 12)                                   //~> 2017-03-12T00:00:00Z
    * @example DateTime.utc(2017, 3, 12, 5)                                //~> 2017-03-12T05:00:00Z
    * @example DateTime.utc(2017, 3, 12, 5, 45)                            //~> 2017-03-12T05:45:00Z
-   * @example DateTime.utc(2017, 3, 12, 5, 45, { locale: "fr" })          //~> 2017-03-12T05:45:00Z with a French locale
+   * @example DateTime.utc(2017, 3, 12, 5, 45, { locale: 'fr' })          //~> 2017-03-12T05:45:00Z with a French locale
    * @example DateTime.utc(2017, 3, 12, 5, 45, 10)                        //~> 2017-03-12T05:45:10Z
-   * @example DateTime.utc(2017, 3, 12, 5, 45, 10, 765, { locale: "fr" }) //~> 2017-03-12T05:45:10.765Z with a French locale
+   * @example DateTime.utc(2017, 3, 12, 5, 45, 10, 765, { locale: 'fr' }) //~> 2017-03-12T05:45:10.765Z with a French locale
    * @return {DateTime}
    */
   static utc() {
@@ -572,7 +572,7 @@ export default class DateTime {
   static fromJSDate(date, options = {}) {
     const ts = isDate(date) ? date.valueOf() : NaN;
     if (Number.isNaN(ts)) {
-      return DateTime.invalid("invalid input");
+      return DateTime.invalid('invalid input');
     }
 
     const zoneToUse = normalizeZone(options.zone, Settings.defaultZone);
@@ -604,7 +604,7 @@ export default class DateTime {
       );
     } else if (milliseconds < -MAX_DATE || milliseconds > MAX_DATE) {
       // this isn't perfect because because we can still end up out of range because of additional shifting, but it's a start
-      return DateTime.invalid("Timestamp out of range");
+      return DateTime.invalid('Timestamp out of range');
     } else {
       return new DateTime({
         ts: milliseconds,
@@ -626,7 +626,7 @@ export default class DateTime {
    */
   static fromSeconds(seconds, options = {}) {
     if (!isNumber(seconds)) {
-      throw new InvalidArgumentError("fromSeconds requires a numerical input");
+      throw new InvalidArgumentError('fromSeconds requires a numerical input');
     } else {
       return new DateTime({
         ts: seconds * 1000,
@@ -691,12 +691,12 @@ export default class DateTime {
 
     if ((containsGregor || containsOrdinal) && definiteWeekDef) {
       throw new ConflictingSpecificationError(
-        "Can't mix weekYear/weekNumber units with year/month/day or ordinals"
+        'Can't mix weekYear/weekNumber units with year/month/day or ordinals'
       );
     }
 
     if (containsGregorMD && containsOrdinal) {
-      throw new ConflictingSpecificationError("Can't mix ordinal dates with month/day");
+      throw new ConflictingSpecificationError('Can't mix ordinal dates with month/day');
     }
 
     const useWeekData = definiteWeekDef || (normalized.weekday && !containsGregor);
@@ -760,7 +760,7 @@ export default class DateTime {
     // gregorian data + weekday serves only to validate
     if (normalized.weekday && containsGregor && obj.weekday !== inst.weekday) {
       return DateTime.invalid(
-        "mismatched weekday",
+        'mismatched weekday',
         `you can't specify both a weekday of ${normalized.weekday} and a date of ${inst.toISO()}`
       );
     }
@@ -786,7 +786,7 @@ export default class DateTime {
    */
   static fromISO(text, opts = {}) {
     const [vals, parsedZone] = parseISODate(text);
-    return parseDataToDateTime(vals, parsedZone, opts, "ISO 8601", text);
+    return parseDataToDateTime(vals, parsedZone, opts, 'ISO 8601', text);
   }
 
   /**
@@ -805,7 +805,7 @@ export default class DateTime {
    */
   static fromRFC2822(text, opts = {}) {
     const [vals, parsedZone] = parseRFC2822Date(text);
-    return parseDataToDateTime(vals, parsedZone, opts, "RFC 2822", text);
+    return parseDataToDateTime(vals, parsedZone, opts, 'RFC 2822', text);
   }
 
   /**
@@ -825,7 +825,7 @@ export default class DateTime {
    */
   static fromHTTP(text, opts = {}) {
     const [vals, parsedZone] = parseHTTPDate(text);
-    return parseDataToDateTime(vals, parsedZone, opts, "HTTP", opts);
+    return parseDataToDateTime(vals, parsedZone, opts, 'HTTP', opts);
   }
 
   /**
@@ -843,7 +843,7 @@ export default class DateTime {
    */
   static fromFormat(text, fmt, opts = {}) {
     if (isUndefined(text) || isUndefined(fmt)) {
-      throw new InvalidArgumentError("fromFormat requires an input string and a format");
+      throw new InvalidArgumentError('fromFormat requires an input string and a format');
     }
 
     const { locale = null, numberingSystem = null } = opts,
@@ -889,7 +889,7 @@ export default class DateTime {
    */
   static fromSQL(text, opts = {}) {
     const [vals, parsedZone] = parseSQL(text);
-    return parseDataToDateTime(vals, parsedZone, opts, "SQL", text);
+    return parseDataToDateTime(vals, parsedZone, opts, 'SQL', text);
   }
 
   /**
@@ -900,7 +900,7 @@ export default class DateTime {
    */
   static invalid(reason, explanation = null) {
     if (!reason) {
-      throw new InvalidArgumentError("need to specify a reason the DateTime is invalid");
+      throw new InvalidArgumentError('need to specify a reason the DateTime is invalid');
     }
 
     const invalid = reason instanceof Invalid ? reason : new Invalid(reason, explanation);
@@ -929,7 +929,7 @@ export default class DateTime {
    */
   static parseFormatForOpts(formatOpts, localeOpts = {}) {
     const tokenList = formatOptsToTokens(formatOpts, Locale.fromObject(localeOpts));
-    return !tokenList ? null : tokenList.map((t) => (t ? t.val : null)).join("");
+    return !tokenList ? null : tokenList.map((t) => (t ? t.val : null)).join('');
   }
 
   /**
@@ -941,7 +941,7 @@ export default class DateTime {
    */
   static expandFormat(fmt, localeOpts = {}) {
     const expanded = expandMacroTokens(Formatter.parseFormat(fmt), Locale.fromObject(localeOpts));
-    return expanded.map((t) => t.val).join("");
+    return expanded.map((t) => t.val).join('');
   }
 
   // INFO
@@ -1145,7 +1145,7 @@ export default class DateTime {
    * @type {string}
    */
   get monthShort() {
-    return this.isValid ? Info.months("short", { locObj: this.loc })[this.month - 1] : null;
+    return this.isValid ? Info.months('short', { locObj: this.loc })[this.month - 1] : null;
   }
 
   /**
@@ -1155,7 +1155,7 @@ export default class DateTime {
    * @type {string}
    */
   get monthLong() {
-    return this.isValid ? Info.months("long", { locObj: this.loc })[this.month - 1] : null;
+    return this.isValid ? Info.months('long', { locObj: this.loc })[this.month - 1] : null;
   }
 
   /**
@@ -1165,7 +1165,7 @@ export default class DateTime {
    * @type {string}
    */
   get weekdayShort() {
-    return this.isValid ? Info.weekdays("short", { locObj: this.loc })[this.weekday - 1] : null;
+    return this.isValid ? Info.weekdays('short', { locObj: this.loc })[this.weekday - 1] : null;
   }
 
   /**
@@ -1175,7 +1175,7 @@ export default class DateTime {
    * @type {string}
    */
   get weekdayLong() {
-    return this.isValid ? Info.weekdays("long", { locObj: this.loc })[this.weekday - 1] : null;
+    return this.isValid ? Info.weekdays('long', { locObj: this.loc })[this.weekday - 1] : null;
   }
 
   /**
@@ -1189,14 +1189,14 @@ export default class DateTime {
   }
 
   /**
-   * Get the short human name for the zone's current offset, for example "EST" or "EDT".
+   * Get the short human name for the zone's current offset, for example 'EST' or 'EDT'.
    * Defaults to the system's locale if no locale has been specified
    * @type {string}
    */
   get offsetNameShort() {
     if (this.isValid) {
       return this.zone.offsetName(this.ts, {
-        format: "short",
+        format: 'short',
         locale: this.locale,
       });
     } else {
@@ -1205,14 +1205,14 @@ export default class DateTime {
   }
 
   /**
-   * Get the long human name for the zone's current offset, for example "Eastern Standard Time" or "Eastern Daylight Time".
+   * Get the long human name for the zone's current offset, for example 'Eastern Standard Time' or 'Eastern Daylight Time'.
    * Defaults to the system's locale if no locale has been specified
    * @type {string}
    */
   get offsetNameLong() {
     if (this.isValid) {
       return this.zone.offsetName(this.ts, {
-        format: "long",
+        format: 'long',
         locale: this.locale,
       });
     } else {
@@ -1301,7 +1301,7 @@ export default class DateTime {
   // TRANSFORM
 
   /**
-   * "Set" the DateTime's zone to UTC. Returns a newly-constructed DateTime.
+   * 'Set' the DateTime's zone to UTC. Returns a newly-constructed DateTime.
    *
    * Equivalent to {@link DateTime#setZone}('utc')
    * @param {number} [offset=0] - optionally, an offset from UTC in minutes
@@ -1313,7 +1313,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" the DateTime's zone to the host's local zone. Returns a newly-constructed DateTime.
+   * 'Set' the DateTime's zone to the host's local zone. Returns a newly-constructed DateTime.
    *
    * Equivalent to `setZone('local')`
    * @return {DateTime}
@@ -1323,7 +1323,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" the DateTime's zone to specified zone. Returns a newly-constructed DateTime.
+   * 'Set' the DateTime's zone to specified zone. Returns a newly-constructed DateTime.
    *
    * By default, the setter keeps the underlying time the same (as in, the same timestamp), but the new instance will report different local times and consider DSTs when making computations, as with {@link DateTime#plus}. You may wish to use {@link DateTime#toLocal} and {@link DateTime#toUTC} which provide simple convenience wrappers for commonly used zones.
    * @param {string|Zone} [zone='local'] - a zone identifier. As a string, that can be any IANA zone supported by the host environment, or a fixed-offset name of the form 'UTC+3', or the strings 'local' or 'utc'. You may also supply an instance of a {@link DateTime#Zone} class.
@@ -1349,7 +1349,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" the locale, numberingSystem, or outputCalendar. Returns a newly-constructed DateTime.
+   * 'Set' the locale, numberingSystem, or outputCalendar. Returns a newly-constructed DateTime.
    * @param {Object} properties - the properties to set
    * @example DateTime.local(2017, 5, 25).reconfigure({ locale: 'en-GB' })
    * @return {DateTime}
@@ -1360,7 +1360,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" the locale. Returns a newly-constructed DateTime.
+   * 'Set' the locale. Returns a newly-constructed DateTime.
    * Just a convenient alias for reconfigure({ locale })
    * @example DateTime.local(2017, 5, 25).setLocale('en-GB')
    * @return {DateTime}
@@ -1370,8 +1370,8 @@ export default class DateTime {
   }
 
   /**
-   * "Set" the values of specified units. Returns a newly-constructed DateTime.
-   * You can only set units with this method; for "setting" metadata, see {@link DateTime#reconfigure} and {@link DateTime#setZone}.
+   * 'Set' the values of specified units. Returns a newly-constructed DateTime.
+   * You can only set units with this method; for 'setting' metadata, see {@link DateTime#reconfigure} and {@link DateTime#setZone}.
    * @param {Object} values - a mapping of units to numbers
    * @example dt.set({ year: 2017 })
    * @example dt.set({ hour: 8, minute: 30 })
@@ -1395,12 +1395,12 @@ export default class DateTime {
 
     if ((containsGregor || containsOrdinal) && definiteWeekDef) {
       throw new ConflictingSpecificationError(
-        "Can't mix weekYear/weekNumber units with year/month/day or ordinals"
+        'Can't mix weekYear/weekNumber units with year/month/day or ordinals'
       );
     }
 
     if (containsGregorMD && containsOrdinal) {
-      throw new ConflictingSpecificationError("Can't mix ordinal dates with month/day");
+      throw new ConflictingSpecificationError('Can't mix ordinal dates with month/day');
     }
 
     let mixed;
@@ -1454,7 +1454,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" this DateTime to the beginning of a unit of time.
+   * 'Set' this DateTime to the beginning of a unit of time.
    * @param {string} unit - The unit to go to the beginning of. Can be 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', or 'millisecond'.
    * @example DateTime.local(2014, 3, 3).startOf('month').toISODate(); //=> '2014-03-01'
    * @example DateTime.local(2014, 3, 3).startOf('year').toISODate(); //=> '2014-01-01'
@@ -1468,36 +1468,36 @@ export default class DateTime {
     const o = {},
       normalizedUnit = Duration.normalizeUnit(unit);
     switch (normalizedUnit) {
-      case "years":
+      case 'years':
         o.month = 1;
       // falls through
-      case "quarters":
-      case "months":
+      case 'quarters':
+      case 'months':
         o.day = 1;
       // falls through
-      case "weeks":
-      case "days":
+      case 'weeks':
+      case 'days':
         o.hour = 0;
       // falls through
-      case "hours":
+      case 'hours':
         o.minute = 0;
       // falls through
-      case "minutes":
+      case 'minutes':
         o.second = 0;
       // falls through
-      case "seconds":
+      case 'seconds':
         o.millisecond = 0;
         break;
-      case "milliseconds":
+      case 'milliseconds':
         break;
       // no default, invalid units throw in normalizeUnit()
     }
 
-    if (normalizedUnit === "weeks") {
+    if (normalizedUnit === 'weeks') {
       o.weekday = 1;
     }
 
-    if (normalizedUnit === "quarters") {
+    if (normalizedUnit === 'quarters') {
       const q = Math.ceil(this.month / 3);
       o.month = (q - 1) * 3 + 1;
     }
@@ -1506,7 +1506,7 @@ export default class DateTime {
   }
 
   /**
-   * "Set" this DateTime to the end (meaning the last millisecond) of a unit of time
+   * 'Set' this DateTime to the end (meaning the last millisecond) of a unit of time
    * @param {string} unit - The unit to go to the end of. Can be 'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', or 'millisecond'.
    * @example DateTime.local(2014, 3, 3).endOf('month').toISO(); //=> '2014-03-31T23:59:59.999-05:00'
    * @example DateTime.local(2014, 3, 3).endOf('year').toISO(); //=> '2014-12-31T23:59:59.999-05:00'
@@ -1533,8 +1533,8 @@ export default class DateTime {
    * @param {Object} opts - opts to override the configuration options on this DateTime
    * @example DateTime.now().toFormat('yyyy LLL dd') //=> '2017 Apr 22'
    * @example DateTime.now().setLocale('fr').toFormat('yyyy LLL dd') //=> '2017 avr. 22'
-   * @example DateTime.now().toFormat('yyyy LLL dd', { locale: "fr" }) //=> '2017 avr. 22'
-   * @example DateTime.now().toFormat("HH 'hours and' mm 'minutes'") //=> '20 hours and 55 minutes'
+   * @example DateTime.now().toFormat('yyyy LLL dd', { locale: 'fr' }) //=> '2017 avr. 22'
+   * @example DateTime.now().toFormat('HH 'hours and' mm 'minutes'') //=> '20 hours and 55 minutes'
    * @return {string}
    */
   toFormat(fmt, opts = {}) {
@@ -1569,7 +1569,7 @@ export default class DateTime {
   }
 
   /**
-   * Returns an array of format "parts", meaning individual tokens along with metadata. This is allows callers to post-process individual sections of the formatted output.
+   * Returns an array of format 'parts', meaning individual tokens along with metadata. This is allows callers to post-process individual sections of the formatted output.
    * Defaults to the system's locale if no locale has been specified
    * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts
    * @param opts {Object} - Intl.DateTimeFormat constructor options, same as `toLocaleString`.
@@ -1602,7 +1602,7 @@ export default class DateTime {
    * @return {string}
    */
   toISO({
-    format = "extended",
+    format = 'extended',
     suppressSeconds = false,
     suppressMilliseconds = false,
     includeOffset = true,
@@ -1612,10 +1612,10 @@ export default class DateTime {
       return null;
     }
 
-    const ext = format === "extended";
+    const ext = format === 'extended';
 
     let c = toISODate(this, ext);
-    c += "T";
+    c += 'T';
     c += toISOTime(this, ext, suppressSeconds, suppressMilliseconds, includeOffset, extendedZone);
     return c;
   }
@@ -1628,12 +1628,12 @@ export default class DateTime {
    * @example DateTime.utc(1982, 5, 25).toISODate({ format: 'basic' }) //=> '19820525'
    * @return {string}
    */
-  toISODate({ format = "extended" } = {}) {
+  toISODate({ format = 'extended' } = {}) {
     if (!this.isValid) {
       return null;
     }
 
-    return toISODate(this, format === "extended");
+    return toISODate(this, format === 'extended');
   }
 
   /**
@@ -1642,7 +1642,7 @@ export default class DateTime {
    * @return {string}
    */
   toISOWeekDate() {
-    return toTechFormat(this, "kkkk-'W'WW-c");
+    return toTechFormat(this, 'kkkk-'W'WW-c');
   }
 
   /**
@@ -1666,18 +1666,18 @@ export default class DateTime {
     includeOffset = true,
     includePrefix = false,
     extendedZone = false,
-    format = "extended",
+    format = 'extended',
   } = {}) {
     if (!this.isValid) {
       return null;
     }
 
-    let c = includePrefix ? "T" : "";
+    let c = includePrefix ? 'T' : '';
     return (
       c +
       toISOTime(
         this,
-        format === "extended",
+        format === 'extended',
         suppressSeconds,
         suppressMilliseconds,
         includeOffset,
@@ -1693,7 +1693,7 @@ export default class DateTime {
    * @return {string}
    */
   toRFC2822() {
-    return toTechFormat(this, "EEE, dd LLL yyyy HH:mm:ss ZZZ", false);
+    return toTechFormat(this, 'EEE, dd LLL yyyy HH:mm:ss ZZZ', false);
   }
 
   /**
@@ -1705,7 +1705,7 @@ export default class DateTime {
    * @return {string}
    */
   toHTTP() {
-    return toTechFormat(this.toUTC(), "EEE, dd LLL yyyy HH:mm:ss 'GMT'");
+    return toTechFormat(this.toUTC(), 'EEE, dd LLL yyyy HH:mm:ss 'GMT'');
   }
 
   /**
@@ -1733,16 +1733,16 @@ export default class DateTime {
    * @return {string}
    */
   toSQLTime({ includeOffset = true, includeZone = false, includeOffsetSpace = true } = {}) {
-    let fmt = "HH:mm:ss.SSS";
+    let fmt = 'HH:mm:ss.SSS';
 
     if (includeZone || includeOffset) {
       if (includeOffsetSpace) {
-        fmt += " ";
+        fmt += ' ';
       }
       if (includeZone) {
-        fmt += "z";
+        fmt += 'z';
       } else if (includeOffset) {
-        fmt += "ZZ";
+        fmt += 'ZZ';
       }
     }
 
@@ -1870,9 +1870,9 @@ export default class DateTime {
    * i2.diff(i1, ['months', 'days', 'hours']).toObject() //=> { months: 16, days: 19, hours: 0.75 }
    * @return {Duration}
    */
-  diff(otherDateTime, unit = "milliseconds", opts = {}) {
+  diff(otherDateTime, unit = 'milliseconds', opts = {}) {
     if (!this.isValid || !otherDateTime.isValid) {
-      return Duration.invalid("created by diffing an invalid DateTime");
+      return Duration.invalid('created by diffing an invalid DateTime');
     }
 
     const durOpts = { locale: this.locale, numberingSystem: this.numberingSystem, ...opts };
@@ -1894,7 +1894,7 @@ export default class DateTime {
    * @param {string} [opts.conversionAccuracy='casual'] - the conversion system to use
    * @return {Duration}
    */
-  diffNow(unit = "milliseconds", opts = {}) {
+  diffNow(unit = 'milliseconds', opts = {}) {
     return this.diff(DateTime.now(), unit, opts);
   }
 
@@ -1942,28 +1942,28 @@ export default class DateTime {
   }
 
   /**
-   * Returns a string representation of a this time relative to now, such as "in two days". Can only internationalize if your
+   * Returns a string representation of a this time relative to now, such as 'in two days'. Can only internationalize if your
    * platform supports Intl.RelativeTimeFormat. Rounds down by default.
    * @param {Object} options - options that affect the output
    * @param {DateTime} [options.base=DateTime.now()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
-   * @param {string} [options.style="long"] - the style of units, must be "long", "short", or "narrow"
-   * @param {string|string[]} options.unit - use a specific unit or array of units; if omitted, or an array, the method will pick the best unit. Use an array or one of "years", "quarters", "months", "weeks", "days", "hours", "minutes", or "seconds"
+   * @param {string} [options.style='long'] - the style of units, must be 'long', 'short', or 'narrow'
+   * @param {string|string[]} options.unit - use a specific unit or array of units; if omitted, or an array, the method will pick the best unit. Use an array or one of 'years', 'quarters', 'months', 'weeks', 'days', 'hours', 'minutes', or 'seconds'
    * @param {boolean} [options.round=true] - whether to round the numbers in the output.
    * @param {number} [options.padding=0] - padding in milliseconds. This allows you to round up the result if it fits inside the threshold. Don't use in combination with {round: false} because the decimal output will include the padding.
    * @param {string} options.locale - override the locale of this DateTime
    * @param {string} options.numberingSystem - override the numberingSystem of this DateTime. The Intl system may choose not to honor this
-   * @example DateTime.now().plus({ days: 1 }).toRelative() //=> "in 1 day"
-   * @example DateTime.now().setLocale("es").toRelative({ days: 1 }) //=> "dentro de 1 día"
-   * @example DateTime.now().plus({ days: 1 }).toRelative({ locale: "fr" }) //=> "dans 23 heures"
-   * @example DateTime.now().minus({ days: 2 }).toRelative() //=> "2 days ago"
-   * @example DateTime.now().minus({ days: 2 }).toRelative({ unit: "hours" }) //=> "48 hours ago"
-   * @example DateTime.now().minus({ hours: 36 }).toRelative({ round: false }) //=> "1.5 days ago"
+   * @example DateTime.now().plus({ days: 1 }).toRelative() //=> 'in 1 day'
+   * @example DateTime.now().setLocale('es').toRelative({ days: 1 }) //=> 'dentro de 1 día'
+   * @example DateTime.now().plus({ days: 1 }).toRelative({ locale: 'fr' }) //=> 'dans 23 heures'
+   * @example DateTime.now().minus({ days: 2 }).toRelative() //=> '2 days ago'
+   * @example DateTime.now().minus({ days: 2 }).toRelative({ unit: 'hours' }) //=> '48 hours ago'
+   * @example DateTime.now().minus({ hours: 36 }).toRelative({ round: false }) //=> '1.5 days ago'
    */
   toRelative(options = {}) {
     if (!this.isValid) return null;
     const base = options.base || DateTime.fromObject({}, { zone: this.zone }),
       padding = options.padding ? (this < base ? -options.padding : options.padding) : 0;
-    let units = ["years", "months", "days", "hours", "minutes", "seconds"];
+    let units = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
     let unit = options.unit;
     if (Array.isArray(options.unit)) {
       units = options.unit;
@@ -1971,32 +1971,32 @@ export default class DateTime {
     }
     return diffRelative(base, this.plus(padding), {
       ...options,
-      numeric: "always",
+      numeric: 'always',
       units,
       unit,
     });
   }
 
   /**
-   * Returns a string representation of this date relative to today, such as "yesterday" or "next month".
+   * Returns a string representation of this date relative to today, such as 'yesterday' or 'next month'.
    * Only internationalizes on platforms that supports Intl.RelativeTimeFormat.
    * @param {Object} options - options that affect the output
    * @param {DateTime} [options.base=DateTime.now()] - the DateTime to use as the basis to which this time is compared. Defaults to now.
    * @param {string} options.locale - override the locale of this DateTime
-   * @param {string} options.unit - use a specific unit; if omitted, the method will pick the unit. Use one of "years", "quarters", "months", "weeks", or "days"
+   * @param {string} options.unit - use a specific unit; if omitted, the method will pick the unit. Use one of 'years', 'quarters', 'months', 'weeks', or 'days'
    * @param {string} options.numberingSystem - override the numberingSystem of this DateTime. The Intl system may choose not to honor this
-   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar() //=> "tomorrow"
-   * @example DateTime.now().setLocale("es").plus({ days: 1 }).toRelative() //=> ""mañana"
-   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar({ locale: "fr" }) //=> "demain"
-   * @example DateTime.now().minus({ days: 2 }).toRelativeCalendar() //=> "2 days ago"
+   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar() //=> 'tomorrow'
+   * @example DateTime.now().setLocale('es').plus({ days: 1 }).toRelative() //=> ''mañana'
+   * @example DateTime.now().plus({ days: 1 }).toRelativeCalendar({ locale: 'fr' }) //=> 'demain'
+   * @example DateTime.now().minus({ days: 2 }).toRelativeCalendar() //=> '2 days ago'
    */
   toRelativeCalendar(options = {}) {
     if (!this.isValid) return null;
 
     return diffRelative(options.base || DateTime.fromObject({}, { zone: this.zone }), this, {
       ...options,
-      numeric: "auto",
-      units: ["years", "months", "days"],
+      numeric: 'auto',
+      units: ['years', 'months', 'days'],
       calendary: true,
     });
   }
@@ -2008,7 +2008,7 @@ export default class DateTime {
    */
   static min(...dateTimes) {
     if (!dateTimes.every(DateTime.isDateTime)) {
-      throw new InvalidArgumentError("min requires all arguments be DateTimes");
+      throw new InvalidArgumentError('min requires all arguments be DateTimes');
     }
     return bestBy(dateTimes, (i) => i.valueOf(), Math.min);
   }
@@ -2020,7 +2020,7 @@ export default class DateTime {
    */
   static max(...dateTimes) {
     if (!dateTimes.every(DateTime.isDateTime)) {
-      throw new InvalidArgumentError("max requires all arguments be DateTimes");
+      throw new InvalidArgumentError('max requires all arguments be DateTimes');
     }
     return bestBy(dateTimes, (i) => i.valueOf(), Math.max);
   }
@@ -2238,7 +2238,7 @@ export function friendlyDateTime(dateTimeish) {
     return dateTimeish;
   } else if (dateTimeish && dateTimeish.valueOf && isNumber(dateTimeish.valueOf())) {
     return DateTime.fromJSDate(dateTimeish);
-  } else if (dateTimeish && typeof dateTimeish === "object") {
+  } else if (dateTimeish && typeof dateTimeish === 'object') {
     return DateTime.fromObject(dateTimeish);
   } else {
     throw new InvalidArgumentError(

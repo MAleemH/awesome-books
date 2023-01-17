@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/MAleemH/awesome-books/issues"
   },
-  "homepage": "https://github.com/MAleemH/awesome-books#readme"
+  "homepage": "https://github.com/MAleemH/awesome-books#readme",
+  "dependencies": {
+    "luxon": "^3.2.1"
+  }
 }

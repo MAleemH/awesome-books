@@ -1,4 +1,5 @@
 import Library from './modules/library.js';
+import { DateTime } from './modules/luxon/src/luxon.js';
 
 // menu buttons closed
 const form = document.querySelector('#form');
@@ -7,7 +8,16 @@ const titleInput = document.querySelector('#input_title');
 const authorInput = document.querySelector('#input_author');
 const addBtn = document.querySelector('#add_btn');
 
+// date
+const currentDate = () => {
+  const now = DateTime.now();
+  const dateShow = now.toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS);
+  document.querySelector('#date').innerHTML = dateShow;
+  setTimeout(currentDate, 1000);
+};
+
 window.onload = () => {
+  currentDate();
   const newLibrary = new Library();
   newLibrary.showBook();
 

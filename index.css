@@ -56,6 +56,13 @@ a:hover {
 
 /* navbar closed */
 
+#date {
+  text-align: right;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /* books-list */
 
 .book-list {

@@ -9,7 +9,7 @@ export default class Library {
     this.Library = JSON.parse(localStorage.getItem('collections')) || [];
   }
 
-  addBook() {
+  addBook = () => {
     const newBook = new Books();
     newBook.title = titleInput.value;
     newBook.author = authorInput.value;
@@ -18,7 +18,7 @@ export default class Library {
     this.showBook();
   }
 
-  showBook() {
+  showBook = () => {
     bookList.innerHTML = '';
     this.Library.forEach((collection, i) => {
       bookList.innerHTML += `<div id="${i}" class="books">
@@ -30,7 +30,7 @@ export default class Library {
     });
   }
 
-  removeBook(book) {
+  removeBook = (book) => {
     book.parentElement.remove();
     this.Library = this.Library.filter((collection, i) => i !== Number(book.parentElement.id));
     localStorage.setItem('collections', JSON.stringify(this.Library));

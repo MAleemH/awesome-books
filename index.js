@@ -1,15 +1,11 @@
-import Books from './modules/book.js';
 import Library from './modules/library.js';
+
 // menu buttons closed
 const form = document.querySelector('#form');
 const bookList = document.querySelector('.book-list');
 const titleInput = document.querySelector('#input_title');
 const authorInput = document.querySelector('#input_author');
 const addBtn = document.querySelector('#add_btn');
-
-// //display books
-// document.addEventListener('DOMContentLoaded', Library.showBook);
-
 
 window.onload = () => {
   const newLibrary = new Library();

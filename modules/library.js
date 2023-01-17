@@ -1,4 +1,9 @@
+import Books from './book.js';
+
 const bookList = document.querySelector('.book-list');
+const titleInput = document.querySelector('#input_title');
+const authorInput = document.querySelector('#input_author');
+
 export default class Library {
     constructor() {
       this.Library = JSON.parse(localStorage.getItem('collections')) || [];

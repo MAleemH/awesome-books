@@ -11,7 +11,7 @@
     "stylelint-scss": "^3.21.0"
   },
   "name": "awesome-books-2",
-  "description": "",
+  "description": "<!-- TABLE OF CONTENTS -->",
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/MAleemH/awesome-books/issues"
   },
-  "homepage": "https://github.com/MAleemH/awesome-books#readme"
+  "homepage": "https://github.com/MAleemH/awesome-books#readme",
+  "dependencies": {
+    "luxon": "^3.2.1"
+  }
 }
